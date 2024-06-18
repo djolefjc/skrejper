@@ -1,0 +1,21 @@
+{
+    "name": "djolefjc/skrejper",
+    "description": "PHP command-line scraper.",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Djolefjc\\Skrejper\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Djordje Stamenkovic",
+            "email": "djolefjc@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/console": "^5.4"
+    }
+}
