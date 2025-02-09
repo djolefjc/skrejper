@@ -1,21 +1,13 @@
 {
-    "name": "djolefjc/skrejper",
-    "description": "PHP command-line scraper.",
-    "type": "library",
-    "license": "MIT",
+    "name": "koren/skrejper",
+    "description": "\"Scrape website data\"",
+    "type": "project",
     "autoload": {
         "psr-4": {
-            "Djolefjc\\Skrejper\\": "src/"
+            "Koren\\Skrejper\\": "src/"
         }
     },
-    "authors": [
-        {
-            "name": "Djordje Stamenkovic",
-            "email": "djolefjc@gmail.com"
-        }
-    ],
-    "minimum-stability": "stable",
     "require": {
-        "symfony/console": "^5.4"
-    }
+        "simplehtmldom/simplehtmldom":"2.0-RC2"
+    }    
 }
