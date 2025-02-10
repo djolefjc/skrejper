@@ -7,10 +7,13 @@ use simplehtmldom\HtmlWeb;
 class Scraper
 {
 
-  const MAIN_SHOP_PAGE_URL = "http://www.e-tiba.rs/product-category/caj-kafa-topla-cokolada/";
-  const ELEMENT_CLASS = ".product-image .woocommerce-LoopProduct-link";
-  const NUMBER_OF_PAGES = "";
-  const SHOP_PAGE_URL = "http://www.e-tiba.rs/product-category/caj-kafa-topla-cokolada/page/";
+  const FILE_NAME = "data.csv"; //Give the file a name
+  const MAIN_SHOP_PAGE_URL = "https://shop-test.tst/shop-example"; //Inster main shop page link
+  const ELEMENT_CLASS = ""; //Insert element link class
+  const SHOP_PAGE_URL = "https://shop-test.tst/shop-example/page/"; //Add a shop page url, if there are pages
+  const NUMBER_OF_PAGES = "1"; //Add number of pages
+
+  const ELEMENTS = [];
 
   public function init($option)
   {
@@ -38,7 +41,7 @@ class Scraper
       $linkovi[] = $p->href;
     }
 
-    if ($this::NUMBER_OF_PAGES > 1) {
+    if ($this::SHOP_PAGE_URL != "") {
       for ($i = 1; $i <= $this::NUMBER_OF_PAGES; $i++) {
         $client = new HtmlWeb();
         $html = $client->load($this::SHOP_PAGE_URL . $i);
@@ -69,38 +72,32 @@ class Scraper
     if (filesize('links.txt') != 0) {
       $lines = file('links.txt');
       $i = 1;
-      $row = [];
+      $row = [
+        ['ID','Image']
+      ];
 
       foreach ($lines as $line) {
         $client = new HtmlWeb();
         $line = trim($line);
         $html = $client->load($line);
-
+        
         $product_img = "";
-        $img = ".woocommerce-product-gallery__image a";
+        $img = ".some-class a"; 
 
         foreach ($html->find($img) as $t) {
           $product_img = $t->href;
         }
+        $row[$i]['id'] = $i;
         $row[$i]['img'] = $product_img;
         $i++;
-      } 
-      //EXPORT U CSV
-      $delimiter = ",";
-      $filename = "data" . ".csv"; // Create file name
-      $f = fopen('memory.txt', 'r+');
-
-      //WOO FIELDS
-      // $fields = array('featured_image','post_title','post_category','post_content','post_author','post_date','post_format','comment_status','post_status');
-      
-      $fields = ['Image'];
-      fputcsv($f, $fields, $delimiter);
-      foreach ($row as $r) {
-        $lineData = [$r['img']];
-        fputcsv($f, $lineData, $delimiter);
       }
-      fseek($f, 0);
-      fpassthru($f);
+      $fp = fopen($this::FILE_NAME, 'w');
+
+      foreach ($row as $fields) {
+        fputcsv($fp, $fields, ',', '"', '');
+      }
+
+      fclose($fp);
     }
   }
 
